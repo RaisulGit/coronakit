@@ -10,7 +10,7 @@
 	<jsp:include page="header.jsp" />
 	<hr />
 
-	<form action="admin?action=showproducts" method="POST">
+	<form action="admin?action=insertproduct" method="POST">
 		<table cellspacing="5px" cellpadding="5px">
 			<tr>
 				<th>ProductID</th>

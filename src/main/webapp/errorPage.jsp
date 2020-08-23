@@ -12,7 +12,7 @@
 <hr/>
 	<div>
 		<h3>Something went wrong! We regret the inconvenience!</h3>
-		<p>Error Message : <%=exception.getMessage()%> </p>
+		<p>Error Message : ${errMsg } </p>
 		<p>Please Contact Administrator</p>
 	</div>
 <hr/>	

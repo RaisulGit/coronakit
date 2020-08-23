@@ -70,17 +70,11 @@ public class ProductMasterDao {
 		if (product != null) {
 			try (Connection con =connect();					
 				PreparedStatement pst = con.prepareStatement(UPD_CONT_QRY);) {
-				System.out.println("I am inside save");
 				pst.setInt(4, product.getId());
 				pst.setString(1, product.getProductName());;
 				pst.setString(2, product.getCost());
 				pst.setString(3, product.getProductDescription());
-				System.out.println(product.getId());
-				System.out.println(product.getCost());
-				System.out.println(product.getProductDescription());
-				System.out.println("I am before execute");
 				pst.executeUpdate();
-				System.out.println("I am executing correctly");
 			} catch (SQLException exp) {
 				throw new Exception("Saving Product failed!");
 			}

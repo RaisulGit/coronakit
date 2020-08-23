@@ -10,7 +10,7 @@
 <body>
 	<jsp:include page="header.jsp" />
 	<hr />
-<div align="right"><a href="index.jsp">LOGOUT</a></div>
+<div align="right"><a href="admin?action=logout">LOGOUT</a></div>
 	<c:choose>
 		<c:when test="${product == null || product.isEmpty() }">
 			<p>
@@ -38,7 +38,7 @@
 					</tr>
 				</c:forEach>
 				<tr>
-					<!--<jsp:include page="newproduct.jsp" />-->
+					<!-- <jsp:include page="newproduct.jsp" />-->
 				</tr>
 				<tr>
 					<td><a href="admin?action=newproduct">INSERT NEW PRODUCT</a></td>

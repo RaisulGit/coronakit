@@ -85,8 +85,9 @@ public class AdminController extends HttpServlet {
 	}
 
 	private String adminLogout(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
+		String viewName = "";
+		viewName="index.jsp";
+		return viewName;
 	}
 
 	private String listAllProducts(HttpServletRequest request, HttpServletResponse response) {
@@ -103,19 +104,18 @@ public class AdminController extends HttpServlet {
 	}
 
 	private String updateProduct(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("inside update product");
 		ProductMaster product = new ProductMaster();		
 		product.setId(Integer.parseInt((String) request.getParameter(("pid"))));
 		product.setProductName((String) request.getParameter("pname"));
 		product.setCost((String) request.getParameter("pcost"));
-		System.out.println("YYYYYYYY"+request.getParameter("cost"));
 		product.setProductDescription((String) request.getParameter("pdescription"));
 		String viewName = "";
 		try {
 			productMasterDao.save(product);
 			viewName =listAllProducts(request, response);
 		}catch (Exception e) {
-			
+			request.setAttribute("errMsg", e.getMessage());
+			viewName = "errorPage.jsp";
 		}
 		return viewName;
 	}
@@ -153,16 +153,11 @@ public class AdminController extends HttpServlet {
 	}
 
 	private String insertProduct(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("I am inside insert");
 		ProductMaster product = new ProductMaster();
 		product.setId(Integer.parseInt(request.getParameter("pid")));
 		product.setProductName(request.getParameter("pname"));
 		product.setCost(request.getParameter("pcost"));
 		product.setProductDescription(request.getParameter("pdescription"));
-		System.out.println(request.getParameter("pid"));
-		System.out.println(request.getParameter("pname"));
-		System.out.println(request.getParameter("pcost"));
-		System.out.println(request.getParameter("pdescription"));
 		String viewName = "";
 
 		try {		
