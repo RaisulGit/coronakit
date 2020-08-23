@@ -1,12 +1,6 @@
 package com.iiht.evaluation.coronokit.model;
 
-
-
-
-
 public class ProductMaster {
-	
-
 	private int id;
 	private String productName;
 	private String cost;
@@ -47,8 +41,13 @@ public class ProductMaster {
 	public void setProductDescription(String productDescription) {
 		this.productDescription = productDescription;
 	}
-
-		}
+	@Override
+	public String toString() {
+		return "ProductMaster [id=" + id + ", productName=" + productName + ", cost=" + cost + ", productDescription="
+				+ productDescription + "]";
+	}
+	
+}
 
 	
 

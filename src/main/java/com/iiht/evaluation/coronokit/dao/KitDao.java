@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.iiht.evaluation.coronokit.model.CoronaKit;
+import com.iiht.evaluation.coronokit.model.KitDetail;
+import com.iiht.evaluation.coronokit.model.ProductMaster;
 
 
 
@@ -26,15 +28,16 @@ public class KitDao {
         this.jdbcPassword = jdbcPassword;
     }
 
-	protected void connect() throws SQLException {
+	protected Connection connect() throws SQLException {
 		if (jdbcConnection == null || jdbcConnection.isClosed()) {
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName("com.mysql.cj.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
 				throw new SQLException(e);
 			}
 			jdbcConnection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
 		}
+		return jdbcConnection;
 	}
 
 	protected void disconnect() throws SQLException {
@@ -42,6 +45,121 @@ public class KitDao {
 			jdbcConnection.close();
 		}
 	}
+	
+	public static final String INS_CONT_QRY = "INSERT INTO kitdetails(id,coronaKitId,productId,quantity,amount) VALUES(?,?,?,?,?)";
+	public static final String UPD_CONT_QRY = "UPDATE kitdetails set coronaKitId=?,productId=?,quantity=?,amount WHERE id=?";
+	public static final String DEL_CONT_QRY = "DELETE FROM kitdetails WHERE id=?";
+	public static final String GET_CONT_BY_ID_QRY = "SELECT coronaKitId,productId,quantity,amount FROM kitdetails WHERE id=?";
+	public static final String GET_ALL_CONTS_QRY = "SELECT id,coronaKitId,productId,quantity,amount FROM kitdetails";
 
-	// add DAO methods as per requirements
+	
+	
+	public KitDetail add(KitDetail kit) throws Exception {
+
+		if (kit != null) {
+			try (Connection con =connect();				
+				PreparedStatement pst = con.prepareStatement(INS_CONT_QRY);) {
+
+				pst.setInt(1, kit.getId());
+				pst.setInt(2, kit.getCoronaKitId());
+				pst.setInt(3, kit.getProductId());
+				pst.setInt(4, kit.getAmount());
+				pst.setInt(5, kit.getQuantity());
+				pst.executeUpdate();
+			} catch (SQLException exp) {
+				throw new Exception("Adding kits failed!");
+			}
+		}
+
+		return kit;
+	}
+
+	public KitDetail save(KitDetail kit) throws Exception {
+		if (kit != null) {
+			try (Connection con =connect();
+					
+				PreparedStatement pst = con.prepareStatement(UPD_CONT_QRY);) {
+				pst.setInt(5, kit.getId());
+				pst.setInt(1, kit.getCoronaKitId());
+				pst.setInt(2, kit.getProductId());
+				pst.setInt(3, kit.getAmount());
+				pst.setInt(4, kit.getQuantity());
+				System.out.println("I am executing correctly");
+			} catch (SQLException exp) {
+				throw new Exception("Saving kits failed!");
+			}
+		}
+
+		return kit;
+	}
+
+	public boolean deleteById(int id) throws Exception {
+		boolean isDeleted = false;
+		try (Connection con =connect();
+				PreparedStatement pst = con.prepareStatement(DEL_CONT_QRY);) {
+
+			pst.setInt(1, id);
+
+			int rowsCount = pst.executeUpdate();
+			isDeleted = rowsCount > 0;
+
+		} catch (SQLException exp) {
+			throw new Exception("Deleting kits failed!");
+		}
+		return isDeleted;
+	}
+
+	public KitDetail getById(int id) throws Exception {
+		KitDetail kit = null;
+
+		try (Connection con =connect();
+				PreparedStatement pst = con.prepareStatement(GET_CONT_BY_ID_QRY);) {
+
+			pst.setInt(1, id);
+			
+			ResultSet rs = pst.executeQuery();
+			
+			if(rs.next()) {
+				pst.setInt(5, kit.getId());
+				pst.setInt(1, kit.getCoronaKitId());
+				pst.setInt(2, kit.getProductId());
+				pst.setInt(3, kit.getAmount());
+				pst.setInt(4, kit.getQuantity());
+			}
+
+		} catch (SQLException exp) {
+			throw new Exception("Feteching kits failed!");
+		}
+
+		return kit;
+	}
+
+	public List<KitDetail> getAll() throws Exception {
+		List<KitDetail> kits = new ArrayList<KitDetail>();
+		try (Connection con =connect();
+				PreparedStatement pst = con.prepareStatement(GET_ALL_CONTS_QRY);) {
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				KitDetail kit = new KitDetail();
+				pst.setInt(1, kit.getId());
+				pst.setInt(2, kit.getCoronaKitId());
+				pst.setInt(3, kit.getProductId());
+				pst.setInt(4, kit.getAmount());
+				pst.setInt(5, kit.getQuantity());
+			}
+			if(kits.isEmpty()) {
+				kits=null;
+			}
+
+		} catch (SQLException exp) {
+			throw new Exception("Feteching kits failed!");
+		}
+		
+		return kits;
+	}
+	public int randomIdGenerator() {
+		int randomNumber = (int) (Math.random()*90000);
+		return randomNumber;
+	}
 }

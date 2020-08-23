@@ -1,7 +1,11 @@
 package com.iiht.evaluation.coronokit.controller;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.iiht.evaluation.coronokit.dao.KitDao;
 import com.iiht.evaluation.coronokit.dao.ProductMasterDao;
 import com.iiht.evaluation.coronokit.model.CoronaKit;
+import com.iiht.evaluation.coronokit.model.KitDetail;
+import com.iiht.evaluation.coronokit.model.OrderSummary;
+import com.iiht.evaluation.coronokit.model.ProductMaster;
 
 @WebServlet("/user")
 public class UserController extends HttpServlet {
@@ -91,7 +98,8 @@ public class UserController extends HttpServlet {
 	}
 
 	private String showOrderSummary(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+		OrderSummary orderSummaryObj = new OrderSummary();
+		
 		return "";
 	}
 
@@ -101,12 +109,17 @@ public class UserController extends HttpServlet {
 	}
 
 	private String showPlaceOrderForm(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
+		String viewName = "";
+		OrderSummary orderSummaryObj = new OrderSummary();
+		
+		viewName="placeorder.jsp";
+		return viewName;
 	}
 
 	private String showKitDetails(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+		
+		
+		
 		return "";
 	}
 
@@ -116,22 +129,46 @@ public class UserController extends HttpServlet {
 	}
 
 	private String addNewItemToKit(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+		KitDetail kit = new KitDetail();
+		kit.setId(kitDAO.randomIdGenerator());
+		kit.setCoronaKitId(kitDAO.randomIdGenerator());
+		System.out.println(request.getParameter("id"));
+		
+		
 		return "";
 	}
-
+	//Working fine
 	private String showAllProducts(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
+		String viewName = "";
+		try {
+			List<ProductMaster> product = productMasterDao.getAll();
+			request.setAttribute("product", product);
+			viewName = "showproductstoadd.jsp";
+		} catch (Exception e) {
+			request.setAttribute("errMsg", e.getMessage());
+			viewName = "errorPage.jsp";
+		}
+		return viewName;
 	}
 
 	private String insertNewUser(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+
 		return "";
 	}
 
-	private String showNewUserForm(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
+	private String showNewUserForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		String userName=(String) request.getParameter("pname");
+		String userEmail=(String) request.getParameter("pemail");
+		String userContact=(String) request.getParameter("pcontact");
+		System.out.println("User details"+userName+ "  "+userEmail+"  "+userContact );
+		
+		insertNewUser(request, response);
+		
+		String viewName=showKitDetails(request, response);
+		viewName="newuser.jsp";
+		return viewName;
 	}
+	
+	
 }
