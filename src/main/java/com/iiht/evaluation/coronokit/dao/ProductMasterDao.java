@@ -41,7 +41,7 @@ public class ProductMasterDao {
 		}
 	}
 
-	public static final String INS_CONT_QRY = "INSERT INTO productdetails(id,productname,cost,productdesc) VALUES(?,?,?,?)";
+	public static final String INS_CONT_QRY = "INSERT INTO productdetails(productname,cost,productdesc) VALUES(?,?,?)";
 	public static final String UPD_CONT_QRY = "UPDATE productdetails set productname=?,cost=?,productdesc=? WHERE id=?";
 	public static final String DEL_CONT_QRY = "DELETE FROM productdetails WHERE id=?";
 	public static final String GET_CONT_BY_ID_QRY = "SELECT id,productname,cost,productdesc FROM productdetails WHERE id=?";
@@ -53,10 +53,10 @@ public class ProductMasterDao {
 			try (Connection con =connect();					
 				PreparedStatement pst = con.prepareStatement(INS_CONT_QRY);) {
 				
-				pst.setInt(1, product.getId());
-				pst.setString(2, product.getProductName());
-				pst.setString(3, product.getCost());
-				pst.setString(4, product.getProductDescription());
+				//pst.setInt(1, product.getId());
+				pst.setString(1, product.getProductName());
+				pst.setString(2, product.getCost());
+				pst.setString(3, product.getProductDescription());
 				pst.executeUpdate();
 			} catch (SQLException exp) {
 				throw new Exception("Adding Product failed!");

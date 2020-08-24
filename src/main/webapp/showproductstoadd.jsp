@@ -18,7 +18,7 @@
 			</p>
 		</c:when>
 		<c:otherwise>
-			<table border="1" cellspacing="4px" cellpadding="4px">
+			<table id="tbl" border="1" cellspacing="4px" cellpadding="4px">
 
 				<tr>
 					<th>ProductID</th>
@@ -33,13 +33,13 @@
 						<td>${product.productName}</td>
 						<td>${product.cost}</td>
 						<td>${product.productDescription}</td>
-						<td> <select name="cars" id="cars">
+						<td> <select name="items" id="item">
 								<option value="1">1</option>
 								<option value="2">2</option>
 								<option value="3">3</option>
 								<option value="4">4</option>
 						</select></td>
-						<td><a href="user?action=addnewitem">ADD PRODUCT</a>						
+						<td><a href="user?action=addnewitem" >ADD PRODUCT</a>						
 					</tr>
 				</c:forEach>
 				<tr>

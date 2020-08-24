@@ -14,7 +14,7 @@
 	<c:choose>
 		<c:when test="${product == null || product.isEmpty() }">
 			<p>
-				No Products Found Try <a href="newProduct">adding</a> one
+				No Products Found Try <a href="admin?action=newproduct">adding</a> one
 			</p>
 		</c:when>
 		<c:otherwise>
@@ -37,9 +37,6 @@
 						</td>
 					</tr>
 				</c:forEach>
-				<tr>
-					<!-- <jsp:include page="newproduct.jsp" />-->
-				</tr>
 				<tr>
 					<td><a href="admin?action=newproduct">INSERT NEW PRODUCT</a></td>
 				</tr>

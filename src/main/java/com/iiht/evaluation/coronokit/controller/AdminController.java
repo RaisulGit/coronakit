@@ -154,7 +154,7 @@ public class AdminController extends HttpServlet {
 
 	private String insertProduct(HttpServletRequest request, HttpServletResponse response) {
 		ProductMaster product = new ProductMaster();
-		product.setId(Integer.parseInt(request.getParameter("pid")));
+		//product.setId(Integer.parseInt(request.getParameter("pid")));
 		product.setProductName(request.getParameter("pname"));
 		product.setCost(request.getParameter("pcost"));
 		product.setProductDescription(request.getParameter("pdescription"));

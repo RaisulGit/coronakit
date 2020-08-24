@@ -132,7 +132,8 @@ public class UserController extends HttpServlet {
 		KitDetail kit = new KitDetail();
 		kit.setId(kitDAO.randomIdGenerator());
 		kit.setCoronaKitId(kitDAO.randomIdGenerator());
-		System.out.println(request.getParameter("id"));
+		System.out.println(request.getParameter("product"));
+		System.out.println(request.getAttribute(("product")));
 		
 		
 		return "";
@@ -157,15 +158,12 @@ public class UserController extends HttpServlet {
 	}
 
 	private String showNewUserForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+		String viewName="";
 		String userName=(String) request.getParameter("pname");
 		String userEmail=(String) request.getParameter("pemail");
-		String userContact=(String) request.getParameter("pcontact");
-		System.out.println("User details"+userName+ "  "+userEmail+"  "+userContact );
-		
-		insertNewUser(request, response);
-		
-		String viewName=showKitDetails(request, response);
+		String userContact=(String) request.getParameter("pcontact");	
+		insertNewUser(request, response);		
+		viewName=showKitDetails(request, response);
 		viewName="newuser.jsp";
 		return viewName;
 	}
