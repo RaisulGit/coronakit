@@ -138,9 +138,11 @@ public class UserController extends HttpServlet {
 		kit.setId(kitDAO.randomIdGenerator());		
 		kit.setCoronaKitId(kitDAO.randomIdGenerator());		
 		kit.setProductId((Integer.parseInt(request.getParameter("id"))));
-		kit.setAmount(Integer.parseInt((String) request.getParameter("cost")));
+		kit.setAmount(Integer.parseInt((String) request.getParameter("cost")));		
 		kit.setQuantity(Integer.parseInt((String) request.getParameter(("itemcount"))));
-		kitDAO.add(kit);
+		if(Integer.parseInt((String) request.getParameter(("itemcount")))!=0) {
+			kitDAO.add(kit);
+		}		
 		viewName = showKitDetails(request, response);
 		return viewName;
 	}

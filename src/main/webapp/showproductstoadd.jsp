@@ -16,7 +16,9 @@
 			<p>No Products Found Try, contact asdmin</p>
 		</c:when>
 		<c:otherwise>
-			
+			<%
+				Map<String,String> map1 = new HashMap<>();			
+			%>
 			<form action="user?action=addnewitem" method="post">
 				<table border="1" cellspacing="4px" cellpadding="4px">
 					<tr>
@@ -39,7 +41,11 @@
 									<option value="3">3</option>
 									<option value="4">4</option>
 							</select></td>
-						
+							<%
+								String id=request.getParameter("id");
+								String icount=request.getParameter("itemcount");
+								map1.put(id, icount);
+							%>
 						</tr>
 					</c:forEach>
 				</table>
