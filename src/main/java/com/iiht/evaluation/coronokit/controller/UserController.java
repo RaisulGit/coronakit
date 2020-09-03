@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -15,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.iiht.evaluation.coronokit.dao.KitDao;
 import com.iiht.evaluation.coronokit.dao.ProductMasterDao;
@@ -116,11 +119,12 @@ public class UserController extends HttpServlet {
 		return viewName;
 	}
 
-	private String showKitDetails(HttpServletRequest request, HttpServletResponse response) {
-		
-		
-		
-		return "";
+	private String showKitDetails(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName="";
+		List<KitDetail> abc = kitDAO.getAll();
+		request.setAttribute("abc", abc);
+		viewName = "showkit.jsp";
+		return viewName;
 	}
 
 	private String deleteItemFromKit(HttpServletRequest request, HttpServletResponse response) {
@@ -128,14 +132,17 @@ public class UserController extends HttpServlet {
 		return "";
 	}
 
-	private String addNewItemToKit(HttpServletRequest request, HttpServletResponse response) {
-		KitDetail kit = new KitDetail();
-		kit.setId(kitDAO.randomIdGenerator());
-		kit.setCoronaKitId(kitDAO.randomIdGenerator());
-		System.out.println(request.getParameter("id"));
-		
-		
-		return "";
+	private String addNewItemToKit(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = "";
+		KitDetail kit = new KitDetail(); 		
+		kit.setId(kitDAO.randomIdGenerator());		
+		kit.setCoronaKitId(kitDAO.randomIdGenerator());		
+		kit.setProductId((Integer.parseInt(request.getParameter("id"))));
+		kit.setAmount(Integer.parseInt((String) request.getParameter("cost")));
+		kit.setQuantity(Integer.parseInt((String) request.getParameter(("itemcount"))));
+		kitDAO.add(kit);
+		viewName = showKitDetails(request, response);
+		return viewName;
 	}
 	//Working fine
 	private String showAllProducts(HttpServletRequest request, HttpServletResponse response) {
@@ -161,11 +168,8 @@ public class UserController extends HttpServlet {
 		String userName=(String) request.getParameter("pname");
 		String userEmail=(String) request.getParameter("pemail");
 		String userContact=(String) request.getParameter("pcontact");
-		System.out.println("User details"+userName+ "  "+userEmail+"  "+userContact );
-		
-		insertNewUser(request, response);
-		
-		String viewName=showKitDetails(request, response);
+		insertNewUser(request, response);	
+		String viewName="";
 		viewName="newuser.jsp";
 		return viewName;
 	}

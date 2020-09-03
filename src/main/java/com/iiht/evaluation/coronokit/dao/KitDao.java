@@ -5,13 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.iiht.evaluation.coronokit.model.CoronaKit;
 import com.iiht.evaluation.coronokit.model.KitDetail;
-import com.iiht.evaluation.coronokit.model.ProductMaster;
 
 
 
@@ -55,7 +51,6 @@ public class KitDao {
 	
 	
 	public KitDetail add(KitDetail kit) throws Exception {
-
 		if (kit != null) {
 			try (Connection con =connect();				
 				PreparedStatement pst = con.prepareStatement(INS_CONT_QRY);) {
@@ -84,7 +79,6 @@ public class KitDao {
 				pst.setInt(2, kit.getProductId());
 				pst.setInt(3, kit.getAmount());
 				pst.setInt(4, kit.getQuantity());
-				System.out.println("I am executing correctly");
 			} catch (SQLException exp) {
 				throw new Exception("Saving kits failed!");
 			}
@@ -136,17 +130,18 @@ public class KitDao {
 
 	public List<KitDetail> getAll() throws Exception {
 		List<KitDetail> kits = new ArrayList<KitDetail>();
-		try (Connection con =connect();
+		try (Connection con =connect();				
 				PreparedStatement pst = con.prepareStatement(GET_ALL_CONTS_QRY);) {
 			ResultSet rs = pst.executeQuery();
 			
 			while(rs.next()) {
 				KitDetail kit = new KitDetail();
-				pst.setInt(1, kit.getId());
-				pst.setInt(2, kit.getCoronaKitId());
-				pst.setInt(3, kit.getProductId());
-				pst.setInt(4, kit.getAmount());
-				pst.setInt(5, kit.getQuantity());
+				kit.setId(rs.getInt("id"));
+				kit.setCoronaKitId(rs.getInt("coronaKitId"));
+				kit.setProductId(rs.getInt("productId"));
+				kit.setQuantity(rs.getInt("quantity"));
+				kit.setAmount(rs.getInt("amount"));
+				kits.add(kit);
 			}
 			if(kits.isEmpty()) {
 				kits=null;
